@@ -601,31 +601,24 @@ body {
   visibility: visible;
 }
 
-/* ---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 /* 폴더 */
-/* ---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 
-.main-folder {
-  position: absolute;
-  left: 30px;
+.folder-box {
+  margin: 10px 0 0 10px;
+  display: grid;
+  grid-template-columns: 75px 75px;
+  gap: 10px 30px;
+  width: fit-content;
+}
+
+.folder {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   cursor: pointer;
-}
-
-.folder-bookclub {
-  top: 20px;
-}
-
-.folder-choice {
-  top: 130px;
-}
-
-.folder-spotify {
-  top: 240px;
-  left: 21px;
+  width: 75px;
+  height: 110px;
 }
 
 .main-folder__icon-box {
@@ -633,6 +626,7 @@ body {
   width: 75px;
   padding: 8px 4px 7px 4px;
   margin-bottom: 3px;
+  height: 75px;
 }
 
 .main-folder__icon-box.clicked {
