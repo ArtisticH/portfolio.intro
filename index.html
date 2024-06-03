@@ -174,7 +174,7 @@
         <!-- 음악 -->
         <div class="music"  data-project="music" data-pointerdown="dragAndDrop">
           <div class="music-btns">
-            <div class="btn-red" data-click="redBtnRelatedApp"></div>
+            <div class="btn-red" data-click="redApp"></div>
           </div>
           <img class="music-img" src='/public/img/main/music/Cool.jpeg' alt="music-img">
           <div class="music-opers">
@@ -198,31 +198,31 @@
         </div>
         <!-- 폴더 -->
         <div class="folder-box">
-          <div class="folder" data-project="bookclub" data-dblclick="folder" data-click="folder">
+          <div class="folder folder-bookclub" data-project="bookclub" data-dblclick="folder" data-click="folder">
             <div class="folder-icon">
               <img class="basic-img" src="/public/img/main/folder/folder.png" alt="folder">
             </div>
             <div class="folder-name">Book Club</div>
           </div>
-          <div class="folder" data-project="bookclub-react" data-dblclick="folder" data-click="folder">
+          <div class="folder folder-bookclub-react" data-project="bookclub-react" data-dblclick="folder" data-click="folder">
             <div class="folder-icon">
               <img class="basic-img" src="/public/img/main/folder/folder.png" alt="folder">
             </div>
             <div class="folder-name">Book Club<br>React</div>
           </div>
-          <div class="folder" data-project="spotify" data-dblclick="folder" data-click="folder">
+          <div class="folder folder-spotify" data-project="spotify" data-dblclick="folder" data-click="folder">
             <div class="folder-icon">
               <img class="basic-img" src="/public/img/main/folder/folder.png" alt="folder">
             </div>
             <div class="folder-name">Spotify<br>Design</div>
           </div>
-          <div class="folder" data-project="this" data-dblclick="folder" data-click="folder">
+          <div class="folder folder-this" data-project="this" data-dblclick="folder" data-click="folder">
             <div class="folder-icon">
               <img class="basic-img" src="/public/img/main/folder/folder.png" alt="folder">
             </div>
             <div class="folder-name">This</div>
           </div>
-          <div class="folder" data-project="me" data-dblclick="folder" data-click="folder">
+          <div class="folder folder-me" data-project="me" data-dblclick="folder" data-click="folder">
             <div class="folder-icon">
               <img class="basic-img" src="/public/img/main/folder/folder.png" alt="folder">
             </div>
@@ -230,162 +230,167 @@
           </div>  
         </div>
         <!-- 파일 -->
-        <div class="file file-bookclub" data-project="bookclub" data-pointerdown="dragAndDrop">
+        <div class="file file-bookclub" data-project="bookclub" data-pointerdown="dragAndDrop" hidden>
           <div class="file-nav" data-dblclick="greenBtn">
             <div class="file-title">Book Club</div>
-            <div class="main-file__btns">
-              <div class="btn-red" data-click="redBtn"></div>
-              <div class="btn-yellow" data-isclicked="false" data-disabled="false" data-click="yellowBtn"></div>
-              <div class="btn-green" data-isclicked="false" data-disabled="false" data-click="greenBtn"></div>
+            <div class="file-btns">
+              <div class="btn-red" data-click="red"></div>
+              <div class="btn-yellow" data-isclicked="false" data-disabled="false" data-click="yellow"></div>
+              <div class="btn-green" data-isclicked="false" data-disabled="false" data-click="green"></div>
             </div>  
           </div>
-          <div class="main-file__files shrink">
-            <div class="main-file__file" data-click="file">
-              <div class="main-file__file__icon-box">
-                <img class="basic-img-setting" src="/public/img/main/contents/file-icon.png" alt="file-icon">
+          <div class="file-main">
+            <div class="file-box" data-click="file">
+              <div class="file-icon">
+                <img class="basic-img" src="/public/img/main/folder/file.png" alt="file">
               </div>
-              <div class="main-file__file__name">README.md</div>
+              <div class="file-name">README.md</div>
             </div>
-            <div class="main-file__file" data-click="file">
-              <div class="main-file__file__icon-box">
-                <img class="basic-img-setting" src="/public/img/main/contents/file-icon.png" alt="file-icon">
+            <div class="file-box" data-click="file">
+              <div class="file-icon">
+                <img class="basic-img" src="/public/img/main/folder/file.png" alt="file">
               </div>
-              <div class="main-file__file__name">SEE REAL!</div>
+              <div class="file-name">바로가기</div>
             </div>
-            <!-- 여기 동영상 아이콘으로 바꿔 -->
-            <div class="main-file__file" data-click="file" data-dblclick="replay">
-              <div class="main-file__file__icon-box">
-                <img class="basic-img-setting" src="/public/img/main/contents/file-icon.png" alt="file-icon">
+            <div class="file-box file-box-gif" data-click="file" data-dblclick="gif">
+              <div class="file-icon">
+                <img class="basic-img" src="/public/img/main/folder/file.png" alt="file">
               </div>
-              <div class="main-file__file__name">REPLAY</div>
+              <div class="file-name">.gif</div>
             </div>  
           </div>
         </div>
-        <div class="file file-choice" data-project="choice" data-pointerdown="dragAndDrop" hidden>
+        <div class="file file-bookclub-react" data-project="bookclub-react" data-pointerdown="dragAndDrop" hidden>
           <div class="file-nav" data-dblclick="greenBtn">
-            Choice
-            <div class="main-file__btns">
-              <div class="btn-red" data-click="redBtn"></div>
-              <div class="btn-yellow" data-isclicked="false" data-disabled="false" data-click="yellowBtn"></div>
-              <div class="btn-green" data-isclicked="false" data-disabled="false" data-click="greenBtn"></div>
+            <div class="file-title">Book Club - React</div>
+            <div class="file-btns">
+              <div class="btn-red" data-click="red"></div>
+              <div class="btn-yellow" data-isclicked="false" data-disabled="false" data-click="yellow"></div>
+              <div class="btn-green" data-isclicked="false" data-disabled="false" data-click="green"></div>
             </div>  
           </div>
-          <div class="main-file__files shrink">
-            <div class="main-file__file" data-click="file">
-              <div class="main-file__file__icon-box">
-                <img class="basic-img-setting" src="/public/img/main/contents/file-icon.png" alt="file-icon">
+          <div class="file-main">
+            <div class="file-box" data-click="file">
+              <div class="file-icon">
+                <img class="basic-img" src="/public/img/main/folder/file.png" alt="file">
               </div>
-              <div class="main-file__file__name">README.md</div>
+              <div class="file-name">README.md</div>
             </div>
-            <div class="main-file__file" data-click="file">
-              <div class="main-file__file__icon-box">
-                <img class="basic-img-setting" src="/public/img/main/contents/file-icon.png" alt="file-icon">
+            <div class="file-box" data-click="file">
+              <div class="file-icon">
+                <img class="basic-img" src="/public/img/main/folder/file.png" alt="file">
               </div>
-              <div class="main-file__file__name">SEE REAL!</div>
+              <div class="file-name">바로가기</div>
             </div>
-            <!-- 여기 동영상 아이콘으로 바꿔 -->
-            <div class="main-file__file" data-click="file" data-dblclick="replay">
-              <div class="main-file__file__icon-box">
-                <img class="basic-img-setting" src="/public/img/main/contents/file-icon.png" alt="file-icon">
-              </div>
-              <div class="main-file__file__name">REPLAY</div>
-            </div>  
           </div>
         </div>
         <div class="file file-spotify" data-project="spotify" data-pointerdown="dragAndDrop" hidden>
           <div class="file-nav" data-dblclick="greenBtn">
-            Spotify
-            <div class="main-file__btns">
-              <div class="btn-red" data-click="redBtn"></div>
-              <div class="btn-yellow" data-isclicked="false" data-disabled="false" data-click="yellowBtn"></div>
-              <div class="btn-green" data-isclicked="false" data-disabled="false" data-click="greenBtn"></div>
+            <div class="file-title">Spotify Design</div>
+            <div class="file-btns">
+              <div class="btn-red" data-click="red"></div>
+              <div class="btn-yellow" data-isclicked="false" data-disabled="false" data-click="yellow"></div>
+              <div class="btn-green" data-isclicked="false" data-disabled="false" data-click="green"></div>
             </div>  
           </div>
-          <div class="main-file__files shrink">
-            <div class="main-file__file" data-click="file">
-              <div class="main-file__file__icon-box">
-                <img class="basic-img-setting" src="/public/img/main/contents/file-icon.png" alt="file-icon">
+          <div class="file-main">
+            <div class="file-box" data-click="file">
+              <div class="file-icon">
+                <img class="basic-img" src="/public/img/main/folder/file.png" alt="file">
               </div>
-              <div class="main-file__file__name">README.md</div>
+              <div class="file-name">README.md</div>
             </div>
-            <div class="main-file__file" data-click="file">
-              <div class="main-file__file__icon-box">
-                <img class="basic-img-setting" src="/public/img/main/contents/file-icon.png" alt="file-icon">
+            <div class="file-box" data-click="file">
+              <div class="file-icon">
+                <img class="basic-img" src="/public/img/main/folder/file.png" alt="file">
               </div>
-              <div class="main-file__file__name">SEE REAL!</div>
+              <div class="file-name">바로가기</div>
             </div>
-            <!-- 여기 동영상 아이콘으로 바꿔 -->
-            <div class="main-file__file" data-click="file" data-dblclick="replay">
-              <div class="main-file__file__icon-box">
-                <img class="basic-img-setting" src="/public/img/main/contents/file-icon.png" alt="file-icon">
+            <div class="file-box file-box-gif" data-click="file" data-dblclick="gif">
+              <div class="file-icon">
+                <img class="basic-img" src="/public/img/main/folder/file.png" alt="file">
               </div>
-              <div class="main-file__file__name">REPLAY</div>
+              <div class="file-name">.gif</div>
             </div>  
           </div>
         </div>
-        <!-- gif -->
-        <div class="main-gif gif-bookclub" data-project="bookclub" data-pointerdown="dragAndDrop">
-          <div class="main-gif__title" data-dblclick="greenBtn">
-            Book Club
-            <div class="main-gif__btns">
-              <div class="btn-red" data-click="redBtn"></div>
-              <div class="btn-yellow" data-isclicked="false" data-disabled="false" data-click="yellowBtn"></div>
-              <div class="btn-green" data-isclicked="false" data-disabled="false" data-click="greenBtn"></div>
+        <div class="file file-this" data-project="this" data-pointerdown="dragAndDrop" hidden>
+          <div class="file-nav" data-dblclick="greenBtn">
+            <div class="file-title">This</div>
+            <div class="file-btns">
+              <div class="btn-red" data-click="red"></div>
+              <div class="btn-yellow" data-isclicked="false" data-disabled="false" data-click="yellow"></div>
+              <div class="btn-green" data-isclicked="false" data-disabled="false" data-click="green"></div>
             </div>  
           </div>
-          <div class="main-gif__main shrink">
-            <div class="main-gif__main__arrow">
-              <img class="main-gif__main__arrow__img" src="/public/img/main/nav/arrow.png" alt="arrow">
+          <div class="file-main">
+            <div class="file-box" data-click="file">
+              <div class="file-icon">
+                <img class="basic-img" src="/public/img/main/folder/file.png" alt="file">
+              </div>
+              <div class="file-name">README.md</div>
             </div>
-            <div class="main-gif__main__gif-box">
-              <!-- <img class="main-gif__main__gif-box__img" src="/public/gif/bookclub.gif" alt="bookclub"> -->
+          </div>
+        </div>
+        <div class="file file-me" data-project="me" data-pointerdown="dragAndDrop" hidden>
+          <div class="file-nav" data-dblclick="greenBtn">
+            <div class="file-title">me</div>
+            <div class="file-btns">
+              <div class="btn-red" data-click="red"></div>
+              <div class="btn-yellow" data-isclicked="false" data-disabled="false" data-click="yellow"></div>
+              <div class="btn-green" data-isclicked="false" data-disabled="false" data-click="green"></div>
+            </div>  
+          </div>
+          <div class="file-main">
+            <div class="file-box" data-click="file">
+              <div class="file-icon">
+                <img class="basic-img" src="/public/img/main/folder/file.png" alt="file">
+              </div>
+              <div class="file-name">자기소개서.pdf</div>
+            </div>
+            <div class="file-box" data-click="file">
+              <div class="file-icon">
+                <img class="basic-img" src="/public/img/main/folder/file.png" alt="file">
+              </div>
+              <div class="file-name">이력서.pdf</div>
             </div>
           </div>
         </div>
         <!-- gif -->
-        <div class="main-gif gif-choice" data-project="choice" data-pointerdown="dragAndDrop">
-          <div class="main-gif__title" data-dblclick="greenBtn">
-            Choice
-            <div class="main-gif__btns">
-              <div class="btn-red" data-click="redBtn"></div>
-              <div class="btn-yellow" data-isclicked="false" data-disabled="false" data-click="yellowBtn"></div>
-              <div class="btn-green" data-isclicked="false" data-disabled="false" data-click="greenBtn"></div>
+        <div class="gif gif-bookclub" data-project="bookclub" data-pointerdown="dragAndDrop">
+          <div class="gif-nav" data-dblclick="greenBtn">
+            <div class="gif-title">Book Club</div>
+            <div class="gif-btns">
+              <div class="btn-red" data-click="red"></div>
+              <div class="btn-yellow" data-isclicked="false" data-disabled="false" data-click="yellow"></div>
+              <div class="btn-green" data-isclicked="false" data-disabled="false" data-click="green"></div>
             </div>  
           </div>
-          <div class="main-gif__main shrink">
-            <div class="main-gif__main__arrow">
-              <img class="main-gif__main__arrow__img" src="/public/img/main/nav/right-arrow.png" alt="right-arrow">
-            </div>
-            <div class="main-gif__main__gif-box">
-              <!-- <img class="main-gif__main__gif-box__img" src="/public/gif/choice.gif" alt="choice"> -->
-            </div>
+          <div class="gif-main">
+            <img class="gif-arrow" src="/public/img/main/nav/arrow.png" alt="arrow">
+            <!-- <img class="gif-img" src="/public/gif/bookclub.gif" alt="gif"> -->
           </div>
         </div>
-        <!-- gif -->
-        <div class="main-gif gif-spotify" data-project="spotify" data-pointerdown="dragAndDrop">
-          <div class="main-gif__title" data-dblclick="greenBtn">
-            Spotify
-            <div class="main-gif__btns">
-              <div class="btn-red" data-click="redBtn"></div>
-              <div class="btn-yellow" data-isclicked="false" data-disabled="false" data-click="yellowBtn"></div>
-              <div class="btn-green" data-isclicked="false" data-disabled="false" data-click="greenBtn"></div>
+        <div class="gif gif-spotify" data-project="spotify" data-pointerdown="dragAndDrop">
+          <div class="gif-nav" data-dblclick="greenBtn">
+            <div class="gif-title">Spotify Design</div>
+            <div class="gif-btns">
+              <div class="btn-red" data-click="red"></div>
+              <div class="btn-yellow" data-isclicked="false" data-disabled="false" data-click="yellow"></div>
+              <div class="btn-green" data-isclicked="false" data-disabled="false" data-click="green"></div>
             </div>  
           </div>
-          <div class="main-gif__main shrink">
-            <div class="main-gif__main__arrow">
-              <img class="main-gif__main__arrow__img" src="/public/img/main/nav/right-arrow.png" alt="right-arrow">
-            </div>
-            <div class="main-gif__main__gif-box">
-              <!-- <img class="main-gif__main__gif-box__img" src="/public/gif/spotify.gif" alt="spotify"> -->
-            </div>
+          <div class="gif-main">
+            <img class="gif-arrow" src="/public/img/main/nav/arrow.png" alt="arrow">
+            <!-- <img class="gif-img" src="/public/gif/spotify.gif" alt="gif"> -->
           </div>
         </div>
         <!-- 스티커 -->
         <div class="main-sticker" data-project="sticker" data-pointerdown="dragAndDrop">
           <div class="main-sticker__btns" data-dblclick="yellowBtn">
-            <div class="btn-red" data-click="redBtnRelatedApp"></div>
-            <div class="btn-yellow" data-isclicked="false" data-disabled="false" data-click="yellowBtn"></div>
-            <div class="btn-green" data-isclicked="false" data-disabled="false" data-click="greenBtn"></div>  
+            <div class="btn-red" data-click="redApp"></div>
+            <div class="btn-yellow" data-isclicked="false" data-disabled="false" data-click="yellow"></div>
+            <div class="btn-green" data-isclicked="false" data-disabled="false" data-click="green"></div>  
           </div>
           <div class="main-sticker__contents shrink">
             안녕하세요 제 이름은 서한나입니다. <br>
