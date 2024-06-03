@@ -170,6 +170,11 @@ class Click {
       ["What Was I Made For", "Billie Eilish"],
       ["obsessed", "Olivia Rodrigo"],
     ];
+    // 폴더 클릭
+    this.$folderIcon = null;
+    this.$folderName = null;
+    this.$folder = null;
+    
     /* 클릭 이벤트 - 버튼 */
     this.btnParent = null;
     // 노랑
@@ -189,11 +194,6 @@ class Click {
     this.projectName = null;
     this.app = null;
     this.circleElem = null;
-
-    /* 클릭 이벤트 - 폴더 */
-    this.folderBox = null;
-    this.folderName = null;
-    this.currentFolder = null;
 
     /* 클릭 이벤트 - 파일 */
     this.fileBox = null;
@@ -224,7 +224,6 @@ class Click {
       // 각각 함수를 실행
       // target은 [data-click]을 가진 상위 요소
       const func = target.dataset.click;
-      console.log('클릭', func);
       this[func](event, target);
     }
   }
@@ -364,6 +363,25 @@ class Click {
     this.$musicImg.src = `/public/img/main/music/${this._playlist[index][0]}.jpeg`;
     this.$audio.src = `/public/audio/${this._playlist[index][0]}.mp3`;
   }
+  // 폴더 클릭 시
+  folder(e, target) {
+    if(!this.$folder) {
+      // 처음 폴더 클릭할때
+      this.$folderIcon = target.querySelector('.folder-icon');
+      this.$folderName = target.querySelector('.folder-name');
+      this.addClassList(this.$folderIcon, 'clicked');
+      this.addClassList(this.$folderName, 'clicked');  
+    } else {
+      this.removeClassList(this.$folderIcon, 'clicked');
+      this.removeClassList(this.$folderName, 'clicked');
+      this.$folderIcon = target.querySelector('.folder-icon');
+      this.$folderName = target.querySelector('.folder-name');
+      this.addClassList(this.$folderIcon, 'clicked');
+      this.addClassList(this.$folderName, 'clicked');  
+    }
+    this.$folder = target;
+  }
+
 
   /* ------------------------------------------------------------------------------------------------------------------------------------------------------------ */
   /* 클릭 이벤트 - 버튼 */
@@ -438,32 +456,6 @@ class Click {
       this.yellowBtnElem.dataset.disabled = 'false';
     }
   }
-
-  /* ------------------------------------------------------------------------------------------------------------------------------------------------------------ */
-  /* 클릭 이벤트 - 폴더 */
-  /* ------------------------------------------------------------------------------------------------------------------------------------------------------------ */
-
-  folder(e, target) {
-    if(!this.currentFolder) {
-      this.folderBox = target.querySelector('.main-folder__icon-box');
-      this.folderName = target.querySelector('.main-folder__icon-name');
-      this.addClassList(this.folderBox, 'clicked');
-      this.addClassList(this.folderName, 'clicked');  
-    } else {
-      this.removeClassList(this.folderBox, 'clicked');
-      this.removeClassList(this.folderName, 'clicked');
-      this.folderBox = target.querySelector('.main-folder__icon-box');
-      this.folderName = target.querySelector('.main-folder__icon-name');
-      this.addClassList(this.folderBox, 'clicked');
-      this.addClassList(this.folderName, 'clicked');  
-    }
-    this.currentFolder = target;
-  }
-
-  /* ------------------------------------------------------------------------------------------------------------------------------------------------------------ */
-  /* 클릭 이벤트 - 파일 */
-  /* ------------------------------------------------------------------------------------------------------------------------------------------------------------ */
-
   file(e, target) {
     if(!this.currentFile) {
       this.fileBox = target.querySelector('.main-file__file__icon-box');
@@ -506,7 +498,6 @@ class DragAndDrop {
     const target = event.target.closest('[data-pointerdown]');
     if(!target) return;
     const func = target.dataset.pointerdown;
-    console.log('드래그앤드롭', func);
     this[func](event, target);
   }
   dragAndDrop(e, target) {
@@ -538,10 +529,8 @@ class DragAndDrop {
 const dragAndDrop = new DragAndDrop();
 document.addEventListener('pointerdown', dragAndDrop);
 
-// --------------------------------------------------------------------------------------------------------------------------------------------------------------
 // 더블 클릭
-
-class HandleDblclickEvents {
+class Dblclick {
   constructor() {
     /* 폴더 */
     this.projectName = null;
@@ -562,8 +551,19 @@ class HandleDblclickEvents {
   handleEvent(event) {
     const target = event.target.closest('[data-dblclick]');
     if(!target) return;
-    const clickType = target.dataset.dblclick;
-    this[clickType](event, target);
+    const func = target.dataset.dblclick;
+    this[func](event, target);
+  }
+  // 폴더에 맞는 파일 창 보여주기
+  folder(e, target) {
+    this.projectName = target.closest('[data-project]').dataset.project;
+    this.fileElem = document.querySelector(`.file-${this.projectName}`);
+    this.fileElem.hidden = false;
+
+    this.shrinkElem = this.fileElem.querySelector('.shrink');
+    this.yellowBtnElem = this.fileElem.querySelector(`[data-click='yellowBtn']`);
+    this.greenBtnElem = this.fileElem.querySelector(`[data-click='greenBtn']`);
+    this.original(this.fileElem);
   }
 
   original(elem) {
@@ -578,18 +578,6 @@ class HandleDblclickEvents {
     elem.style.height = '';
     elem.style.left = '';
     elem.style.top = '';    
-  }
-
-  folder(e, target) {
-    // 폴더에 맞는 파일 창 보여주기
-    this.projectName = target.closest('[data-project]').dataset.project;
-    this.fileElem = document.querySelector(`.file-${this.projectName}`);
-    this.fileElem.hidden = false;
-
-    this.shrinkElem = this.fileElem.querySelector('.shrink');
-    this.yellowBtnElem = this.fileElem.querySelector(`[data-click='yellowBtn']`);
-    this.greenBtnElem = this.fileElem.querySelector(`[data-click='greenBtn']`);
-    this.original(this.fileElem);
   }
 
   replay(e, target) {
@@ -632,8 +620,8 @@ class HandleDblclickEvents {
   }
 }
 
-let handleDblclickEvents = new HandleDblclickEvents();
-document.addEventListener('dblclick', handleDblclickEvents);
+const dblclick = new Dblclick();
+document.addEventListener('dblclick', dblclick);
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 // 앱
