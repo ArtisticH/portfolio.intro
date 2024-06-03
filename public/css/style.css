@@ -1,0 +1,951 @@
+:root {
+  --font-korean: "Noto Sans KR", sans-serif;
+  --font-inter: "Inter", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  display: block;
+  color: black;
+}
+
+body {
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+}
+
+.basic-img {
+  display: block;
+  width: 100%;
+}
+
+/* 부팅 화면 */
+
+#booting {
+  height: 100vh;
+  background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  display: none;
+}
+
+.booting-apple-box {
+  width: 100px;
+  margin: 0 auto;
+  margin-bottom: 70px;
+  visibility: hidden;
+}
+
+.booting-bar-empty {
+  width: 300px;
+  height: 8px;
+  background-color: rgb(39,42,41);
+  border-radius: 5px;
+  /* .booting-bar-filled */
+  position: relative;
+  overflow: hidden;
+  visibility: hidden;
+}
+
+.booting-bar-filled {
+  /* .booting-bar-empty */
+  position: absolute;
+  height: 100%;
+  width: 0%;
+  top: 0;
+  left: 0;
+  background-color: white;
+}
+
+.booting-bar-filled.fill {
+  animation: fill-bar 5s;
+  width: 100%;
+}
+/*
+3초까지 30%만 채우고
+3.5초까지 멈춰있고
+나머지는 100%까지 채운다.
+*/
+@keyframes fill-bar {
+  0% { width: 0%; }
+  60% { width: 30%; }
+  70% { width: 30%; }
+  100% { width: 100%; }
+}
+
+/* 유저 화면 */
+
+#profile {
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  display: none;
+}
+
+.profile-back {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  height: 90vh;
+  object-fit: cover;
+  z-index: -2;
+}
+
+.profile-gray {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: gray;
+  opacity: 0.4;
+  z-index: -1;
+}
+
+.profile {
+  z-index: 1;
+}
+
+.profile-img-box {
+  width: 150px;
+  margin: 0 auto;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.profile-name {
+  font-family: var(--font-korean);
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: white;
+  margin: 25px 0 15px 0;
+  text-align: center;
+  text-shadow: -0.2px -0.2px 2px rgba(0, 0, 0, 1), 0.2px 0.2px 2px rgba(0, 0, 0, 1);
+}
+
+.profile-btn {
+  margin: 0 auto;
+  margin-bottom: 30px;
+  cursor: pointer;
+  width: 170px;
+  font-family: var(--font-inter);
+  background-color: rgba(255, 255, 255, 0.7);
+  color: white;
+  text-shadow: -0.2px -0.2px 2px rgba(0, 0, 0, 1), 0.2px 0.2px 2px rgba(0, 0, 0, 1);
+  height: 30px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 500;
+  box-shadow: -0.2px -0.2px 1px rgba(0, 0, 0, 0.1), 0.2px 0.2px 1px rgba(0, 0, 0, 0.1);
+}
+
+.profile-btn:hover {
+  background-color: rgba(230, 230, 230, 0.5);
+}
+
+.profile-bar-empty {
+  width: 250px;
+  height: 8px;
+  background-color: rgba(39, 42, 41, 0.2);
+  border-radius: 5px;
+  position: relative;
+  overflow: hidden;
+  visibility: hidden;
+}
+
+.profile-bar-filled {
+  position: absolute;
+  height: 100%;
+  width: 0%;
+  top: 0;
+  left: 0;
+  background-color: white;
+}
+
+.profile-bar-filled.fill {
+  animation: fill-bar 3s;
+  width: 100%;
+}
+
+.profile-exp {
+  z-index: 1;
+  text-align: center;
+  font-family: var(--font-korean);
+  font-style: italic;
+  position: fixed;
+  bottom: 70px;
+  font-weight: 500;
+  font-size: 1.2rem;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* 메인 화면 */
+
+#main {
+  height: 100vh;
+}
+
+/* 상단바 */
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 25px;
+  padding: 0 7px;
+}
+
+.nav-left,
+.nav-right {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.basic-nav-img {
+  display: block;
+  padding: 0 13px;
+  /* 패딩13 - 너비13 - 패딩13을 위해 */
+  box-sizing: content-box;
+}
+
+.basic-nav-img.apple {
+  width: 13px;
+}
+
+.nav-element {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.nav-letter {
+  font-family: var(--font-inter);
+  font-size: 0.9rem;
+  letter-spacing: -0.5px;
+  padding: 0 13px;
+  height: 100%;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-margin-left {
+  margin-left: -6px;
+}
+
+.nav-margin-right {
+  margin-right: -6px;
+}
+
+.nav-list {
+  /* .nav-list-ul */
+  position: relative;
+}
+
+.portfolio-list-width {
+  width: 250px;
+}
+
+.skills-list-width {
+  width: 150px;
+}
+
+.nav-list-ul {
+  z-index: 11;
+  /* .nav-list */
+  position: absolute;
+  top: 100%;
+  left: 0;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  padding: 5px;
+  font-weight: 400;
+}
+
+.nav-list-li {
+  border-radius: 5px;
+  padding: 4px 15px 4px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* .nav-list-li-ul에 대해 */
+  position: relative;
+}
+
+.nav-list-li:hover {
+  background-color: rgb(39,108,216);
+}
+
+.nav-list-title {
+  font-family: var(--font-inter);
+  font-size: 1rem;
+  letter-spacing: -0.5px;
+  color: white;
+}
+
+.nav-list-title.k {
+  font-family: var(--font-korean);
+  font-size: 1rem;
+  letter-spacing: -0.5px;
+  color: white;
+}
+
+.nav-list-arrow {
+  width: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-list-li-ul {
+  /* .nav-list-li에 대해 */
+  position: absolute;
+  width: 140px;
+  top: -5px;
+  left: 100%;
+  border-radius: 5px;
+  background-color: rgba(121, 119, 125, 1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 5px;
+}
+
+.nav-list-li-ul-li {
+  border-radius: 5px;
+  padding: 4px 15px 4px 8px;
+}
+
+.nav-list-li-ul-li:hover {
+  background-color: rgb(39,108,216);
+}
+/* nav-list 클릭했을때 */
+.nav-background {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+
+.basic-nav-img.play {
+  width: 17px;
+}
+
+.basic-nav-img.bluetooth {
+  width: 9px;
+}
+
+.basic-nav-img.battery {
+  width: 23px;
+}
+
+.basic-nav-img.wifi {
+  width: 17px;
+}
+
+.basic-nav-img.siri {
+  width: 16px;
+}
+
+.nav-datetime {
+  font-family: var(--font-korean);
+  font-size: 0.9rem;
+  letter-spacing: -0.5px;
+  padding: 0 6px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-time {
+  height: 100%;
+  margin-left: 5px;
+  width: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+/* 공통 */
+/* ---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+
+.btn-red {
+  background-color: #ff5f58;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 7px;
+}
+
+.btn-yellow {
+  background-color: #ffbe2f;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 7px;
+}
+
+.btn-green {
+  background-color: #29c93f;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+/* 모달 창 */
+
+#modal-back {
+  position: fixed;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100vh;
+  z-index: 12;
+  background-color: grey;
+  opacity: 0.7;
+}
+
+#modal {
+  position: fixed;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  border: 1px solid black;
+  z-index: 13;
+  background-color: white;
+  width: 300px;
+}
+
+.modal-nav {
+  display: flex;
+  align-items: center;
+  padding: 0 5px;
+  height: 22px;
+  border-bottom: 1px solid black;
+  justify-content: space-between;
+  font-family: var(--font-korean);
+  font-size: 0.9rem;
+  letter-spacing: -1px;
+  background-color: #eb2da1;
+  color: black;
+}
+
+.modal-cancel {
+  position: relative;
+  width: 17px;
+  height: 17px;
+  cursor: pointer;
+}
+
+.modal-cancel-left,
+.modal-cancel-right {
+  width: 100%;
+  height: 1.5px;
+  background-color: black;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+.modal-cancel-left {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.modal-cancel-right {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.modal {
+  padding: 50px 0;
+  font-family: var(--font-korean);
+  font-size: 1rem;
+  letter-spacing: -1px;
+  font-weight: 300;
+  text-align: center;
+}
+
+/* ---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+/* 배경화면 */
+/* ---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+
+.main-background {
+  height: calc(100vh - 25px);
+  background-image: url('/public/img/background/background.png');
+  background-repeat: no-repeat;
+  background-size: 70vw;
+  background-position: center;
+}
+
+.main-contents {
+  height: 90%;
+  position: relative;
+  /* .menubar-first-ul의 z-index: 11 */
+  z-index: 10;
+}
+
+/* ---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+/* 음악 앱 */
+/* ---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+
+.main-music {
+  position: absolute;
+  right: 20px;
+  top: 40px;
+  width: 420px;
+  height: 420px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  box-shadow: 5px 15px 25px 5px rgba(0, 0, 0, 0.2), -5px -2px 25px 5px rgba(0, 0, 0, 0.2);
+}
+
+.main-music__btns {
+  /* .main-music에 대해서 */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 5px 7px;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.main-music__img-box {
+  width: 100%;
+  height: 100%;
+}
+
+.main-music__img-box__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+}
+
+.main-music__operation {
+  background-color:rgba(59, 58, 58, 0.9);
+   /* .main-music에 대해서 */
+  position: absolute;
+  left: 0;
+  width: 100%;
+  bottom: 0;
+  backdrop-filter: blur(3px);
+  padding: 15px 0;
+  border-radius: 0 0 10px 10px;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.main-music__btns.visible,
+.main-music__operation.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.main-music__operation__info {
+  margin-bottom: 10px;
+}
+
+.main-music__operation__info__song,
+.main-music__operation__info__singer {
+  font-family: var(--font-inter);
+  text-align: center;
+}
+
+.main-music__operation__info__song {
+  color: white;
+  font-size: 1rem;
+  letter-spacing: -0.5px;
+  margin-bottom: 5px;
+}
+
+.main-music__operation__info__singer {
+  font-size: 0.9rem;
+  color: #bfbfbf;
+  letter-spacing: -0.2px;
+}
+
+.main-music__operation__btns {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+}
+
+.main-music__operation__btns__prev,
+.main-music__operation__btns__play,
+.main-music__operation__btns__next {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  height: 100%;
+  padding: 5px;
+  width: 30px;
+}
+
+.main-music__operation__btns__prev:hover,
+.main-music__operation__btns__play:hover,
+.main-music__operation__btns__next:hover {
+  background-color: rgba(99, 90, 90, 0.5);
+}
+
+/* ---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+/* 폴더 */
+/* ---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+
+.main-folder {
+  position: absolute;
+  left: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.folder-bookclub {
+  top: 20px;
+}
+
+.folder-choice {
+  top: 130px;
+}
+
+.folder-spotify {
+  top: 240px;
+  left: 21px;
+}
+
+.main-folder__icon-box {
+  border-radius: 5px;
+  width: 75px;
+  padding: 8px 4px 7px 4px;
+  margin-bottom: 3px;
+}
+
+.main-folder__icon-box.clicked {
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 2px solid #C2C1BF;
+}
+
+.main-folder__icon-box__icon {
+  display: block;
+  width: 100%;
+}
+
+.main-folder__icon-name {
+  text-align: center;
+  font-family: var(--font-inter);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: white;
+  border-radius: 2px;
+  padding: 2px 4px;
+  width: fit-content;
+  margin: 0 auto;
+  letter-spacing: -0.5px;
+  text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.4), 2px 3px 10px rgba(0, 0, 0, 0.7);
+}
+
+.main-folder__icon-name.clicked {
+  background-color: rgb(39,108,216);
+}
+
+/* ---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+/* 파일 */
+/* ---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+
+.main-file {
+  width: 450px;
+  background-color: #323131;
+  border-radius: 7px;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  position: absolute;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.file-bookclub {
+  top: 60px;
+  left: 40px;
+}
+
+.file-choice {
+  top: 80px;
+  left: 80px;
+}
+
+.file-spotify {
+  top: 100px;
+  left: 100px;
+}
+
+.main-file__title {
+  background-color: #565453;
+  width: 100%;
+  padding: 5px 0px;
+  color: white;
+  font-family: var(--font-inter);
+  font-size: 0.9rem;
+  letter-spacing: -0.5px;
+  text-align: center;
+  position: relative;
+}
+
+.main-file__btns {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: min-content;
+  margin-left: 7px;
+}
+
+.main-file__files {
+  display: flex;
+  align-items: center;
+  padding: 20px 20px 80px 20px;
+}
+
+.main-file__file {
+  width: 65px;
+  margin-right: 20px;
+}
+
+.main-file__file__icon-box {
+  width: 60px;
+  border-radius: 5px;
+  padding: 5px 8px;
+  margin: 0 auto;
+  margin-bottom: 5px;
+}
+
+.main-file__file__icon-box.clicked {
+  background-color: #565453;
+}
+
+.main-file__file__name {
+  text-align: center;
+  font-family: var(--font-inter);
+  font-size: 0.7rem;
+  color: white;
+  padding: 2px 4px;
+  border-radius: 2px;
+  width: fit-content;
+  margin: 0 auto;
+  letter-spacing: -0.5px;
+}
+
+.file__readme > .main-file__file__name {
+  margin-left: -4px;
+}
+
+.main-file__file__name.clicked {
+  background-color: rgb(39,108,216);
+}
+
+/* ---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+/* GIF */
+/* ---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+
+.main-gif {
+  width: 500px;
+  border-radius: 7px;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  position: absolute;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.gif-bookclub {
+  top: 100px;
+  left: 130px;
+}
+
+.gif-choice {
+  top: 170px;
+  left: 180px;
+}
+
+.gif-spotify {
+  top: 240px;
+  left: 230px;
+}
+
+.main-gif__title {
+  background-color: #d9d8d9;
+  width: 100%;
+  padding: 5px 0px;
+  font-family: var(--font-inter);
+  font-size: 0.9rem;
+  letter-spacing: -0.5px;
+  text-align: center;
+  position: relative;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+}
+
+.main-gif__btns {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: min-content;
+  margin-left: 7px;
+}
+
+.main-gif__main {
+  position: relative;
+  height: 275px;
+}
+
+.main-gif__main__arrow {
+  position: absolute;
+  width: 20px;
+  right: 10px;
+  top: 10px;
+}
+
+.main-gif__main__arrow__img,
+.main-gif__main__gif-box__img {
+  width: 100%;
+  display: block;
+}
+
+/* ---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+/* 스티커 */
+/* ---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+
+.main-sticker {
+  width: 310px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  position: absolute;
+  top: 50px;
+  right: 430px;
+  background-color: #f6eda1;
+}
+
+.main-sticker__btns {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 2px 7px;
+  background-color: #feea3b;
+}
+
+.main-sticker__contents {
+  padding: 10px;
+  height: 190px;
+  overflow-y: scroll;
+  font-family: var(--font-korean);
+  font-size: 0.8rem;
+  letter-spacing: -0.3px;
+  line-height: 1rem;
+}
+
+/* ---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+/* 앱 */
+/* ---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+
+.main-apps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 10px;
+}
+
+.main-apps__main {
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  padding: 8px 8px 2px 8px;
+  background-color: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+}
+
+.main-apps__main__app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  margin-right: 8px;
+  height: 49px;
+  position: relative;
+  cursor: pointer;
+}
+
+.main-apps__main__app:nth-child(8) {
+  margin-right: 0px;
+}
+
+.main-apps__main__app__img-box {
+  width: 40px;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 5px;
+}
+
+.main-apps__main__app__tooltip {
+  /* .main-apps__main__app에 대해서 */
+  position: absolute;
+  bottom: 130%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-family: var(--font-inter);
+  background-color: #565453;
+  font-weight: 400;
+  font-size: 0.9rem;
+  border: 1px solid black;
+  border-radius: 7px;
+  padding: 7px 12px;
+  white-space: nowrap;
+  display: none;
+}
+
+.main-apps__main__app__circle {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: white;
+}
+
+[data-app].dblclicked {
+  animation: appDblclicked 0.4s linear;
+}
+
+@keyframes appDblclicked {
+  0% { transform: translateY(0);}
+  50% { transform: translateY(-30%); }
+  100% { transform: translateY(0);}
+}

@@ -1,0 +1,16 @@
+{
+  "name": "portfolioframe_final",
+  "version": "1.0.0",
+  "description": "\"seo hanna portfolioframe\"",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app"
+  },
+  "author": "\"seo hanna\"",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2"
+  },
+  "keywords": []
+}
