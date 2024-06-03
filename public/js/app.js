@@ -136,7 +136,6 @@ class Click {
     this.$currentList = null;
     this._navClicked = false;
     this.$nav = document.querySelector('.nav');
-    this.$navLists = document.querySelectorAll('.nav-list');
     this.$nav.onpointerover = this.onlyOneList.bind(this);
     this.$navLis = document.querySelectorAll('.nav-list-li');
     // ul을 보여주는 li에 호버한 경우
@@ -145,28 +144,32 @@ class Click {
     [...this.$navLis].forEach(item => {
       item.addEventListener('pointerenter', this.parentLi);
     });
-
-    /* 클릭 이벤트 - 음악 */
-    this.Audio = document.getElementById('musicAudio');
-    this.PlayBtn = document.querySelector('.main-music__operation__btns__play');
-    this.PlayBtnImg = document.querySelector('.main-music__operation__btns__play > img');
-    this.musicImg = document.querySelector('.main-music__img-box__img');
-    this.song = document.querySelector('.main-music__operation__info__song');
-    this.singer = document.querySelector('.main-music__operation__info__singer');
-    this.playCount = 0;
-    this.playIndex = 0;
-    this.playlist = [
-      // [audio이름(사진 이름), 노래 제목, 가수]
-      ["Anti-Hero", `Anti-Hero (feat. Bleachers)`, `Taylor Swift - Anti-Hero (feat. Bleachers) - Single`],
-      ["Training Season", `Training Season`, `Dua Lipa - Training Season - Single`],
-      ["Flowers", `Flowers`, `Milely Cyrus - Endless Summer Vacation`],
-      ["Houdini", `Houdini`, `Dua Lipa - Houdini - Single`],
-      ["Cruel Summer", `Cruel Summer`, `Taylor Swift - Lover`],
-      ["Drivers License", `drivers License`, `Olivia Rodrigo - SOUR`],
-      ["Suburban Legends", `Suburban Legends(Taylor's Version)`, `Taylor Swift - 1989 (Taylor's Version)`],
+    // 음악
+    // 음악 창 호버 효과
+    this.$music = document.querySelector('.music');
+    this.$musicBtn = document.querySelector('.music-btns');
+    this.$musicOper = document.querySelector('.music-opers');
+    this.invisible = this.invisible.bind(this);
+    this.$music.onpointerenter = this.visible.bind(this);
+    // 재생, 이전, 다음
+    this.$audio = document.getElementById('audio');
+    this.$playBtn = document.querySelector('.music-play');
+    this.$playImg = this.$playBtn.querySelector('img');
+    this.$musicImg = document.querySelector('.music-img');
+    this.$song = document.querySelector('.music-info-song');
+    this.$singer = document.querySelector('.music-info-singer');
+    this.nextMusic = this.nextMusic.bind(this);
+    this._playIndex  = 0;
+    this._playlist = [
+      ["Cool", "Dua Lipa"],
+      ["love is embarrassing", "Olivia Rodrigo"],
+      ["The Alchemy", "Taylor Swift"],
+      ["idontwannabeyouanymore", "Billie Eilish"],
+      ["Cruel Summer", "Taylor Swift"],
+      ["Houdini", "Dua Lipa"],
+      ["What Was I Made For", "Billie Eilish"],
+      ["obsessed", "Olivia Rodrigo"],
     ];
-    this.PLAYLIST_LENGTH = this.playlist.length;
-
     /* 클릭 이벤트 - 버튼 */
     this.btnParent = null;
     // 노랑
@@ -208,6 +211,9 @@ class Click {
         this.hiddenT(this.$currentList.querySelector('.nav-list-ul'));
         this.$currentList = null;
         this._navClicked = false;
+        // 다른 빈영역을 호버하거나, 빈 영역을 클릭하거나, 다른 nav-list를 호버할때
+        // portfolio 영역의 nav-list-li-ul는 다 hidden = true여야 한다. 
+        this.hiddenT(this.$currentLiParent.querySelector('.nav-list-li-ul'));
       } else if(this.folderBox) {
         this.removeClassList(this.folderBox, 'clicked');
         this.removeClassList(this.folderName, 'clicked');  
@@ -217,10 +223,9 @@ class Click {
       // 띄어쓰기를 기준으로 나누고 
       // 각각 함수를 실행
       // target은 [data-click]을 가진 상위 요소
-      const events = target.dataset.click.split(' ');
-      for(let item of events) {
-        this[item](event, target);
-      }  
+      const func = target.dataset.click;
+      console.log('클릭', func);
+      this[func](event, target);
     }
   }
   // 공통 칭구들
@@ -240,10 +245,12 @@ class Click {
   modal() {
     this.hiddenF(this.$modalBack);
     this.hiddenF(this.$modal);
+    this.pauseMusic();
   }  
   modaldisappear() {
     this.hiddenT(this.$modalBack);
     this.hiddenT(this.$modal);
+    this.playMusic();
   }
   // 상단 메뉴 클릭
   // PORTFOLIO나 SKILLS...
@@ -275,7 +282,9 @@ class Click {
   // 포인터호버하거나, 다른 곳 클릭해서 사라질때 두번째 ul도 사라지게 해야한다. 
   onlyOneList(e) {
     if(!this._navClicked) return;
+    // nav-list들을 호버한 경우
     const target = e.target.closest('.nav-list');
+    const isPortfolio = target && target.dataset.navList;
     if(!target) {
       // 만약 다른 nav-list가 아닌 빈 공간에 포인터엔터라면 현재꺼 없애기
       this.removeClassList(this.$currentList, 'nav-background');
@@ -285,8 +294,14 @@ class Click {
       // 안 하면 호버대기만 해도 다시 내용물 보여주기 때문에 안 된다.
       this._navClicked = false;
       this.$currentList = null;
+      // 다른 빈영역을 호버하거나, 빈 영역을 클릭하거나, 다른 nav-list를 호버할때
+      // portfolio 영역의 nav-list-li-ul는 다 hidden = true여야 한다. 
     } else {
       this.showLists(target);
+    }
+    // 만약 portfolio를 벗어났다면 portfolio의 두번째 ul을 초기화
+    if(isPortfolio !== 'portfolio') {
+      this.hiddenT(this.$currentLiParent.querySelector('.nav-list-li-ul'));
     }
   }
   parentLi(e) {
@@ -302,48 +317,52 @@ class Click {
     this.hiddenF(ul);
     this.$currentLiParent = target;
   }
-
-
-
-  
-
-
-  /* ------------------------------------------------------------------------------------------------------------------------------------------------------------ */
-  /* 클릭 이벤트 - 음악 */
-  /* ------------------------------------------------------------------------------------------------------------------------------------------------------------ */
-  
+  // 음악
+  visible(e) {
+    const target = e.currentTarget;
+    this.$musicBtn.classList.add('visible');
+    this.$musicOper.classList.add('visible');
+    target.onpointerleave = this.invisible;
+  }
+  invisible() {
+    this.$musicBtn.classList.remove('visible');
+    this.$musicOper.classList.remove('visible');
+  }
   playMusic() {
-    this.PlayBtnImg.src = `/public/img/main/contents/music/pause-btn.png`
-    this.PlayBtn.dataset.click = 'pauseMusic';
-    this.Audio.play();
-    this.Audio.addEventListener('ended', this.nextMusic);
+    // 재생하면 play -> pause로 아이콘 바꾸기
+    this.$playImg.src = `/public/img/main/music/pause-btn.png`
+    this.$playBtn.dataset.click = 'pauseMusic';
+    this.$audio.play();
+    this.$audio.addEventListener('ended', this.nextMusic);
   }
-
   pauseMusic() {
-    this.PlayBtnImg.src = `/public/img/main/contents/music/play-btn.png`
-    this.PlayBtn.dataset.click = 'playMusic';
-    this.Audio.pause();
+    this.$playImg.src = `/public/img/main/music/play-btn.png`
+    this.$playBtn.dataset.click = 'playMusic';
+    this.$audio.pause();
   }
-
   prevMusic() {
-    if(this.playCount === 0) this.playCount = 7;
-    this.playIndex = --this.playCount % this.PLAYLIST_LENGTH;
-    this.changeMusic();
+    if(this._playIndex === 0) {
+      this._playIndex = 7;
+    } else {
+      this._playIndex--;
+    }
+    this.changeMusic(this._playIndex);
     this.playMusic();
   }
-
   nextMusic() {
-    this.playIndex = ++this.playCount % this.PLAYLIST_LENGTH;
-    this.changeMusic();
+    if(this._playIndex === (this._playlist.length - 1)) {
+      this._playIndex = 0;
+    } else {
+      this._playIndex++;
+    }
+    this.changeMusic(this._playIndex);
     this.playMusic();
   }
-
-  changeMusic() {
-    this.song.textContent = this.playlist[this.playIndex][1];
-    this.singer.textContent = this.playlist[this.playIndex][2];
-    this.musicImg.src = `/public/img/main/contents/music/${this.playlist[this.playIndex][0]}.png`;
-    this.musicImg.alt = this.playlist[this.playIndex][0];
-    this.Audio.src = `/public/audio/${this.playlist[this.playIndex][0]}.mp3`;
+  changeMusic(index) {
+    this.$song.textContent = this._playlist[index][0];
+    this.$singer.textContent = this._playlist[index][1];
+    this.$musicImg.src = `/public/img/main/music/${this._playlist[index][0]}.jpeg`;
+    this.$audio.src = `/public/audio/${this._playlist[index][0]}.mp3`;
   }
 
   /* ------------------------------------------------------------------------------------------------------------------------------------------------------------ */
@@ -396,7 +415,7 @@ class Click {
     this.greenDisabled = target.dataset.disabled;
     if(this.greenDisabled == 'true') return;
     this.goalWidth = document.documentElement.clientWidth;
-    this.goalHeight = document.querySelector('.main-contents').offsetHeight;
+    this.goalHeight = document.querySelector('.main').offsetHeight;
     this.btnParent = target.closest('[data-project]');
     this.isGreenClicked = target.dataset.isclicked;
     this.yellowBtnElem = this.btnParent.querySelector(`[data-click='yellowBtn']`);
@@ -464,94 +483,60 @@ class Click {
 }
 const click = new Click();
 document.addEventListener('click', click);
-
-/* ------------------------------------------------------------------------------------------------------------------------------------------------------------ */
-/* 음악 앱 포인터 이벤트 */
-/* ------------------------------------------------------------------------------------------------------------------------------------------------------------ */
-
-class Music {
-  constructor() {
-    this.musicElem = document.querySelector('.main-music');
-    this.musicBtnElem = document.querySelector('.main-music__btns');
-    this.musicOperation = document.querySelector('.main-music__operation');
-
-    this.visible = this.visible.bind(this);
-    this.invisible = this.invisible.bind(this);
-  }
-
-  pointerEvent() {
-    this.musicElem.addEventListener('pointerenter', this.visible);
-    this.musicElem.addEventListener('pointerleave', this.invisible);
-  }
-
-  visible() {
-    this.musicBtnElem.classList.add('visible');
-    this.musicOperation.classList.add('visible');
-  }
-
-  invisible() {
-    this.musicBtnElem.classList.remove('visible');
-    this.musicOperation.classList.remove('visible');
-  }
-}
-
-let music = new Music();
-music.pointerEvent();
-
-// --------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*
+📍 click과 드래그앤드롭을 모두 가지고 있는 요소는(같은 부모 요소가 아니라 부모 - 자식간), 
+클릭을 하면 pointerdown => .. 이런식으로 pointerdown이벤트가 발생하기 때문에
+실제 버튼을 클릭해도 조금씩 움직인다. 
+드래그앤드롭 이벤트 => 클릭이벤트 이런 식으로 발생..
+이거 고쳐야 한다.
+*/
 // 드래그앤드롭
-
-class HandleDragEvents {
+class DragAndDrop {
   constructor() {
-    this.menuHeight = document.querySelector('.nav').getBoundingClientRect().height;
-    this.shiftX = null;
-    this.shiftY = null;
-    this.target = null;
-
+    this._navHeight = document.querySelector('.nav').getBoundingClientRect().height;
+    this._shiftX = null;
+    this._shiftY = null;
+    this.$target = null;
+    this._zIndex = 20;
     this.moveAt = this.moveAt.bind(this);
     this.pointerMove = this.pointerMove.bind(this);
     this.pointerUp = this.pointerUp.bind(this);
   }
-
   handleEvent(event) {
     const target = event.target.closest('[data-pointerdown]');
     if(!target) return;
-    const clickType = target.dataset.pointerdown;
-    this[clickType](event, target);
+    const func = target.dataset.pointerdown;
+    console.log('드래그앤드롭', func);
+    this[func](event, target);
   }
-
   dragAndDrop(e, target) {
-    this.shiftX = e.clientX - target.getBoundingClientRect().left;
-    this.shiftY = e.clientY - target.getBoundingClientRect().top;
-    this.target = target;  
-    this.target.style.zIndex = 1000;
-
+    this._shiftX = e.clientX - target.getBoundingClientRect().left;
+    this._shiftY = e.clientY - target.getBoundingClientRect().top;
+    this.$target = target;  
+    this.$target.style.zIndex = `${++this._zIndex}`;
     this.moveAt(e.clientX, e.clientY);
-    
     document.addEventListener('pointermove', this.pointerMove);
-    this.target.addEventListener('pointerup', this.pointerUp);
-    this.target.addEventListener('dragstart', (e) => {
+    this.$target.addEventListener('pointerup', this.pointerUp);
+    this.$target.addEventListener('dragstart', (e) => {
       e.preventDefault();
     });
   }
-
   moveAt(clientX, clientY) {
-    this.target.style.left = clientX - this.shiftX + 'px';
-    this.target.style.top = clientY - this.shiftY - this.menuHeight + 'px';
+    this.$target.style.left = clientX - this._shiftX + 'px';
+    // 왜냐면 드래그드롭되는 애들은 .main소속이니까
+    // .main의 absolute임, nav는 갈 수 없음
+    this.$target.style.top = clientY - this._shiftY - this._navHeight + 'px';
   }
-
   pointerMove(e) {
     this.moveAt(e.clientX, e.clientY);
   }
-
   pointerUp() {
     document.removeEventListener('pointermove', this.pointerMove);
-    this.target.removeEventListener('pointerup', this.pointerUp);
+    this.$target.removeEventListener('pointerup', this.pointerUp);
   }
 }
-
-let handleDragEvents = new HandleDragEvents();
-document.addEventListener('pointerdown', handleDragEvents);
+const dragAndDrop = new DragAndDrop();
+document.addEventListener('pointerdown', dragAndDrop);
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 // 더블 클릭

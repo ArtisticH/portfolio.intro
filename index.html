@@ -5,16 +5,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SEO HANNA PORTFOLIO FOR FRONTEND</title>
-  <!-- CSS -->
   <link rel="stylesheet" href="/public/css/style.css">
-  <!-- <link rel="stylesheet" href="/public/css/main.css"> -->
-  <!-- <link rel="stylesheet" href="/public/css/menu.css"> -->
   <!-- <script src="prefixfree.min.js"></script> -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css">
-  <!-- JS -->
   <script defer src="/public/js/app.js"></script>
-  <!-- <script defer src="/public/js/main.js"></script> -->
-  <!-- FONT -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
@@ -48,10 +42,10 @@
   <section id="main">
     <div class="nav">
       <div class="nav-left">
-        <div class="nav-apple nav-element" data-click="modal navBackground">
+        <div class="nav-apple nav-element" data-click="modal">
           <img class="basic-nav-img apple" src="/public/img/main/nav/apple.png" alt="apple-icon">
         </div>
-        <div class="nav-element nav-margin-left nav-list" data-click="navlist">
+        <div class="nav-element nav-margin-left nav-list" data-click="navlist" data-nav-list="portfolio">
           <div class="nav-letter">PORTFOLIO</div>
           <ul class="nav-list-ul portfolio-list-width" hidden>
             <li class="nav-list-li" data-child="true">
@@ -154,55 +148,53 @@
         </div>
       </div>
       <div class="nav-right">
-        <div class="nav-play nav-element nav-margin-right" data-click="modal navBackground">
+        <div class="nav-play nav-element nav-margin-right" data-click="modal">
           <img class="basic-nav-img play" src="/public/img/main/nav/play.png" alt="play-icon">
         </div>
-        <div class="nav-bluetooth nav-element nav-margin-right" data-click="modal navBackground">
+        <div class="nav-bluetooth nav-element nav-margin-right" data-click="modal">
           <img class="basic-nav-img bluetooth" src="/public/img/main/nav/bluetooth.png" alt="bluetooth-icon">
         </div>
-        <div class="nav-battery nav-element nav-margin-right" data-click="modal navBackground">
+        <div class="nav-battery nav-element nav-margin-right" data-click="modal">
           <img class="basic-nav-img battery" src="/public/img/main/nav/battery.png" alt="battery-icon">
         </div>
-        <div class="nav-wifi nav-element nav-margin-right" data-click="modal navBackground">
+        <div class="nav-wifi nav-element nav-margin-right" data-click="modal">
           <img class="basic-nav-img wifi" src="/public/img/main/nav/wifi.png" alt="wifi-icon">
         </div>
-        <div class="nav-siri nav-element nav-margin-right" data-click="modal navBackground">
+        <div class="nav-siri nav-element nav-margin-right" data-click="modal">
           <img class="basic-nav-img siri" src="/public/img/main/nav/siri.png" alt="siri-icon">
         </div>
-        <div class="nav-datetime" data-click="modal navBackground">
+        <div class="nav-datetime" data-click="modal">
           <div class="nav-date"></div>
           <div class="nav-time"></div>
         </div>
       </div>
     </div>
-    <div class="main-background">
-      <div class="main-contents">
+    <div class="not-nav">
+      <div class="main">
         <!-- 음악 -->
-        <div class="main-music"  data-project="music" data-pointerdown="dragAndDrop">
-          <div class="main-music__btns">
+        <div class="music"  data-project="music" data-pointerdown="dragAndDrop">
+          <div class="music-btns">
             <div class="btn-red" data-click="redBtnRelatedApp"></div>
           </div>
-          <div class="main-music__img-box">
-            <img class="main-music__img-box__img" src='/public/img/main/contents/music/Anti-Hero.png' alt="Anti-Hero">
-          </div>
-          <div class="main-music__operation">
-            <div class="main-music__operation__info">
-              <div class="main-music__operation__info__song">Anti-Hero (feat. Bleachers)</div>
-              <div class="main-music__operation__info__singer">Taylor Swift - Anti-Hero (feat. Bleachers) - Single</div>
+          <img class="music-img" src='/public/img/main/music/Cool.jpeg' alt="music-img">
+          <div class="music-opers">
+            <div class="music-info">
+              <div class="music-info-song">Cool</div>
+              <div class="music-info-singer">Dua Lipa</div>
             </div>
-            <div class="main-music__operation__btns">
-              <div class="main-music__operation__btns__prev" data-click="prevMusic">
-                <img class="basic-img-setting" src="/public/img/main/contents/music/prev-btn.png" alt="prev-btn">
+            <div class="music-oper-btns">
+              <div class="music-oper-btn music-prev" data-click="prevMusic">
+                <img class="basic-img" src="/public/img/main/music/prev-btn.png" alt="prev-btn">
               </div>
-              <div class="main-music__operation__btns__play" data-click="playMusic">
-                <img class="basic-img-setting" src="/public/img/main/contents/music/play-btn.png" alt="play-btn">
+              <div class="music-oper-btn music-play" data-click="playMusic">
+                <img class="basic-img" src="/public/img/main/music/play-btn.png" alt="play-btn">
               </div>
-              <div class="main-music__operation__btns__next" data-click="nextMusic">
-                <img class="basic-img-setting" src="/public/img/main/contents/music/next-btn.png" alt="next-btn">
+              <div class="music-oper-btn music-next" data-click="nextMusic">
+                <img class="basic-img" src="/public/img/main/music/next-btn.png" alt="next-btn">
               </div>
             </div>
           </div>  
-          <audio id="musicAudio" src="/public/audio/Anti-Hero.mp3"></audio>
+          <audio id="audio" src="/public/audio/Cool.mp3"></audio>
         </div>
         <!-- 폴더 -->
         <div class="main-folder folder-bookclub" data-project="bookclub" data-dblclick="folder" data-click="folder">
@@ -409,7 +401,7 @@
           </div>
         </div>
       </div>
-      <div class="main-apps">
+      <div class="app">
         <div class="main-apps__main">
           <div class="main-apps__main__app" data-click="modal">
             <div class="main-apps__main__app__img-box">
