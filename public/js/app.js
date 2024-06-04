@@ -58,10 +58,10 @@ class BootingProfile {
     this.$profile.style.display = 'flex';
   }
   imgChange() {
-    this.$profileImg.src = `/public/img/profile/profileChange.jpg`;
+    this.$profileImg.src = `/img/profile/profileChange.jpg`;
   }
   imgOriginal() {
-    this.$profileImg.src = `/public/img/profile/profile.png`;
+    this.$profileImg.src = `/img/profile/profile.png`;
   }
   toMain() {
     this.$profile.style.display = 'none';
@@ -350,14 +350,14 @@ class Click {
   }
   playMusic() {
     // 재생하면 play -> pause로 아이콘 바꾸기
-    this.$playImg.src = `/public/img/main/music/pause-btn.png`
+    this.$playImg.src = `/img/main/music/pause-btn.png`
     this.$playBtn.dataset.click = 'pauseMusic';
     this.$audio.play();
     this.$audio.addEventListener('ended', this.nextMusic);
     this._isPlaying = true;
   }
   pauseMusic() {
-    this.$playImg.src = `/public/img/main/music/play-btn.png`
+    this.$playImg.src = `/img/main/music/play-btn.png`
     this.$playBtn.dataset.click = 'playMusic';
     this.$audio.pause();
     this._isPlaying = false;
@@ -383,8 +383,8 @@ class Click {
   changeMusic(index) {
     this.$song.textContent = this._playlist[index][0];
     this.$singer.textContent = this._playlist[index][1];
-    this.$musicImg.src = `/public/img/main/music/${this._playlist[index][0]}.jpeg`;
-    this.$audio.src = `/public/audio/${this._playlist[index][0]}.mp3`;
+    this.$musicImg.src = `/img/main/music/${this._playlist[index][0]}.jpeg`;
+    this.$audio.src = `/audio/${this._playlist[index][0]}.mp3`;
   }
   // 폴더 클릭 시 색상 강조 효과
   // 클릭당 하나만

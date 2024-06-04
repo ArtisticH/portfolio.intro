@@ -464,7 +464,7 @@ body {
 
 .background {
   height: calc(100vh - 25px);
-  background-image: url('/public/img/background/background.png');
+  background-image: url('/img/background/background.png');
   background-repeat: no-repeat;
   background-size: 70vw;
   background-position: center;
