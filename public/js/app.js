@@ -66,6 +66,7 @@ class BootingProfile {
   toMain() {
     this.$profile.style.display = 'none';
     this.$main.style.display = 'block';
+    startMain();
   }
   async clickProfile() {
     this.imgChange();
@@ -81,7 +82,29 @@ class BootingProfile {
 }
 const bootingProfile = new BootingProfile();
 document.addEventListener('DOMContentLoaded', bootingProfile.init);
-
+// click을 밖으로 빼는 이유는
+// 클래스 Dblclick에서 click을 쓰기 때문에
+let click;
+function startMain() {
+  const time = new Time();
+  time.date();
+  time.time();
+  setInterval(() => {
+    time.time();
+  }, 1000);
+  // 클릭
+  click = new Click();
+  document.addEventListener('click', click);
+  window.addEventListener('resize', click.resize);
+  // 드래그앤드롭
+  const dragAndDrop = new DragAndDrop();
+  document.addEventListener('pointerdown', dragAndDrop);
+  // 더블클릭
+  const dblclick = new Dblclick();
+  document.addEventListener('dblclick', dblclick);
+  // 앱 툴팁
+  new Tooltip();
+}
 // 상단에 시간
 class Time {
   constructor() {
@@ -118,14 +141,7 @@ class Time {
     this.$time.textContent = `${this._ampm} ${this._hours} : ${this._minutes}`;  
   }
 }
-const time = new Time();
-time.date();
-time.time();
-setInterval(() => {
-  time.time();
-}, 1000);
-
-// document에 클릭 이벤트가 발생했을 때
+// 클릭 이벤트
 class Click {
   constructor() {
     // 모달창
@@ -521,9 +537,6 @@ class Click {
     this.$mainWidth = document.documentElement.clientWidth;
   }
 }
-const click = new Click();
-document.addEventListener('click', click);
-window.addEventListener('resize', click.resize);
 /*
 📍 click과 드래그앤드롭을 모두 가지고 있는 요소는(같은 부모 요소가 아니라 부모 - 자식간), 
 클릭을 하면 pointerdown => .. 이런식으로 pointerdown이벤트가 발생하기 때문에
@@ -575,9 +588,6 @@ class DragAndDrop {
     this.$target.removeEventListener('pointerup', this.pointerUp);
   }
 }
-const dragAndDrop = new DragAndDrop();
-document.addEventListener('pointerdown', dragAndDrop);
-
 // 더블 클릭
 class Dblclick {
   constructor() {
@@ -662,11 +672,8 @@ class Dblclick {
     click.yellow(undefined, btn);
   }
 }
-const dblclick = new Dblclick();
-document.addEventListener('dblclick', dblclick);
-
-// 앱
-class App {
+// 툴팁
+class Tooltip {
   constructor() {
     this.$appMain = document.querySelector('.app-main');
     this.$appMain.onpointerover = this.tooltip.bind(this);
@@ -685,8 +692,5 @@ class App {
     this.$tooltip.hidden = true;
   }
 }
-
-const app = new App();
-
 
 
