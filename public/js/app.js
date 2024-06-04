@@ -131,6 +131,7 @@ class Click {
     // 모달창
     this.$modal = document.getElementById('modal');
     this.$modalBack = document.getElementById('modal-back');
+    this._modalPaused = false;
     // nav클릭 시 navlist 보여주는 효과
     // 현재 클릭한 PORTFOLIO나 SKILLS..
     this.$currentList = null;
@@ -159,6 +160,7 @@ class Click {
     this.$song = document.querySelector('.music-info-song');
     this.$singer = document.querySelector('.music-info-singer');
     this.nextMusic = this.nextMusic.bind(this);
+    this._isPlaying = false;
     this._playIndex  = 0;
     this._playlist = [
       ["Cool", "Dua Lipa"],
@@ -179,28 +181,19 @@ class Click {
     this.$file = null;
     this.$fileIcon = null;
     this.$fileName = null;
-
-
     // 버튼 클릭
     this.$root = null;
-    // 노랑
-    this.yellowDisabled = null;
-    this.shrinkElem = null;
-    this.greenBtnElem = null;
-    this.isYellowClicked = null;
-
-    // 초록
-    this.greenDisabled = null;
-    this.goalWidth = null;
-    this.goalHeight = null;
-    this.isGreenClicked = null;
-    this.yellowBtnElem = null;
-
+    this.$rootFirstChild = null;
+    this.$rootSecChild = null;
+    this.$main = document.querySelector('.main');
+    this.$mainWidth = document.documentElement.clientWidth;
+    this.$mainHeight = this.$main.offsetHeight;
+    this._zIndex = '50';
     /* 클릭 이벤트 - 취소 버튼 + 스티커 혹은 음악 앱 */
     this.$project = null;
     this.app = null;
     this.circleElem = null;
-
+    this.resize = this.resize.bind(this);
   }
   // 모든 클릭 이벤트는 여기를 거쳐서 각자의 함수를 찾아간다. 
   handleEvent(event) {
@@ -216,9 +209,10 @@ class Click {
         // 다른 빈영역을 호버하거나, 빈 영역을 클릭하거나, 다른 nav-list를 호버할때
         // portfolio 영역의 nav-list-li-ul는 다 hidden = true여야 한다. 
         this.hiddenT(this.$currentLiParent.querySelector('.nav-list-li-ul'));
-      } else if(this.folderBox) {
-        this.removeClassList(this.folderBox, 'clicked');
-        this.removeClassList(this.folderName, 'clicked');  
+      } else if(this.$folder) {
+        // 빈 영역 클릭시 폴더 강조 있다면 사라져
+        this.removeClassList(this.$folderIcon, 'clicked');
+        this.removeClassList(this.$folderName, 'clicked');  
       }
       return;
     } else {
@@ -246,12 +240,21 @@ class Click {
   modal() {
     this.hiddenF(this.$modalBack);
     this.hiddenF(this.$modal);
-    this.pauseMusic();
+    if(this._isPlaying) {
+      // 음악이 재생되어 있는 경우라면 멈추고
+      // 모달로 음악이 멈췄다는걸 표시
+      this.pauseMusic();
+      this._modalPaused = true;
+    }
   }  
   modaldisappear() {
     this.hiddenT(this.$modalBack);
     this.hiddenT(this.$modal);
-    this.playMusic();
+    // 이전에 모달로 음악이 멈췄었다면 다시 재생
+    if(this._modalPaused) {
+      this.playMusic();
+      this._modalPaused = false;
+    }
   }
   // 상단 메뉴 클릭
   // PORTFOLIO나 SKILLS...
@@ -285,7 +288,7 @@ class Click {
     if(!this._navClicked) return;
     // nav-list들을 호버한 경우
     const target = e.target.closest('.nav-list');
-    const isPortfolio = target && target.dataset.navList;
+    const isPortfolio = target && target.dataset.navList === 'portfolio';
     if(!target) {
       // 만약 다른 nav-list가 아닌 빈 공간에 포인터엔터라면 현재꺼 없애기
       this.removeClassList(this.$currentList, 'nav-background');
@@ -301,7 +304,7 @@ class Click {
       this.showLists(target);
     }
     // 만약 portfolio를 벗어났다면 portfolio의 두번째 ul을 초기화
-    if(isPortfolio !== 'portfolio') {
+    if(!isPortfolio) {
       this.hiddenT(this.$currentLiParent.querySelector('.nav-list-li-ul'));
     }
   }
@@ -335,11 +338,13 @@ class Click {
     this.$playBtn.dataset.click = 'pauseMusic';
     this.$audio.play();
     this.$audio.addEventListener('ended', this.nextMusic);
+    this._isPlaying = true;
   }
   pauseMusic() {
     this.$playImg.src = `/public/img/main/music/play-btn.png`
     this.$playBtn.dataset.click = 'playMusic';
     this.$audio.pause();
+    this._isPlaying = false;
   }
   prevMusic() {
     if(this._playIndex === 0) {
@@ -368,38 +373,26 @@ class Click {
   // 폴더 클릭 시 색상 강조 효과
   // 클릭당 하나만
   folder(e, target) {
-    if(!this.$folder) {
-      // 처음 폴더 클릭할때
-      this.$folderIcon = target.querySelector('.folder-icon');
-      this.$folderName = target.querySelector('.folder-name');
-      this.addClassList(this.$folderIcon, 'clicked');
-      this.addClassList(this.$folderName, 'clicked');  
-    } else {
+    if(this.$folder) {
       this.removeClassList(this.$folderIcon, 'clicked');
       this.removeClassList(this.$folderName, 'clicked');
-      this.$folderIcon = target.querySelector('.folder-icon');
-      this.$folderName = target.querySelector('.folder-name');
-      this.addClassList(this.$folderIcon, 'clicked');
-      this.addClassList(this.$folderName, 'clicked');  
     }
+    this.$folderIcon = target.querySelector('.folder-icon');
+    this.$folderName = target.querySelector('.folder-name');
+    this.addClassList(this.$folderIcon, 'clicked');
+    this.addClassList(this.$folderName, 'clicked');  
     this.$folder = target;
   }
   // 파일 클릭 시 강조 효과
   file(e, target) {
-    console.log(target);
-    if(!this.$file) {
-      this.$fileIcon = target.querySelector('.file-icon');
-      this.$fileName = target.querySelector('.file-name');
-      this.addClassList(this.$fileIcon, 'clicked');
-      this.addClassList(this.$fileName, 'clicked');  
-    } else {
+    if(this.$file) {
       this.removeClassList(this.$fileIcon, 'clicked');
       this.removeClassList(this.$fileName, 'clicked');
-      this.$fileIcon = target.querySelector('.file-icon');
-      this.$fileName = target.querySelector('.file-name');
-      this.addClassList(this.$fileIcon, 'clicked');
-      this.addClassList(this.$fileName, 'clicked');  
     }
+    this.$fileIcon = target.querySelector('.file-icon');
+    this.$fileName = target.querySelector('.file-name');
+    this.addClassList(this.$fileIcon, 'clicked');
+    this.addClassList(this.$fileName, 'clicked');  
     this.$file = target;
     this._fileClicked = true;
   }
@@ -412,12 +405,12 @@ class Click {
   노랑을 클릭하면 그린 비활성화, 
   그린을 선택하면 노랑 비활성화
   */
+  // 파일 창이나 움짤 창을 삭제했을 때
   red(e, target) {
     this.$root = target.closest('[data-project]');
-    // file창인지 gif창인지
     // 파일 창 삭제면 폴더 강조 효과 + 클릭한 파일 없애고
     // 움짝 창 삭제면 움짝 파일 강조 효과 없애야 한다.
-    const type = this.$root.classList[0];
+    const type = this.$root.classList[0]; // file창인지 gif창인지
     const project = this.$root.dataset.project;
     this.hiddenT(this.$root);
     this.removeHighlight(type, project);
@@ -429,10 +422,12 @@ class Click {
       // 그래서 _fileClicked로 체크하고 삭제해야 한다. 
       this.removeClassList(this.$folderIcon, 'clicked');
       this.removeClassList(this.$folderName, 'clicked'); 
+      this.$folder = null;
       // 파일을 클릭한 경우 현재 강조된 파일 삭제
       if(!this._fileClicked) return;
       this.removeClassList(this.$fileIcon, 'clicked');
       this.removeClassList(this.$fileName, 'clicked');
+      this.$file = null;
       this._fileClicked = false;
     } else if(type === 'gif') {
       // 움짤 창을 열게 만든 움짤 파일을 삭제
@@ -445,70 +440,87 @@ class Click {
     }
   }
   redApp(e, target) {
-    this.btnParent = target.closest('[data-project]');
-    this.$project = this.btnParent.dataset.project;
-    this.app = document.querySelector(`[data-app='${this.$project}']`);
-    this.app.dataset.isappclosed = 'true';
-    this.removeClassList(this.app, 'dblclicked');
-    this.circleElem = this.app.querySelector('.main-apps__main__app__circle');
-    this.hiddenT(this.circleElem);
-    this.hiddenT(this.btnParent);
+    this.$root = target.closest('[data-project]');
+    // 사라지고
+    this.hiddenT(this.$root);
+    const project = this.$root.dataset.project;
+    const app = document.querySelector(`[data-app='${project}']`);
+    const circle = app.querySelector('.app-circle');
+    // 밑에 앱의 closed = 'true'로 바꾸고
+    app.dataset.closed = 'true';
+    // 원 사라지게 만들고
+    this.hiddenT(circle);
+    // 더블클릭 클래스 지운다.
+    this.removeClassList(app, 'dblclicked');
   }
+  // 노랑 버튼 클릭하면 Nav만 남고 초록 버튼은 비활성화된다. 
+  // 노랑 버튼이 있는 요소의 가장 상위 부모 요소는 두 개의 큰 자식 요소로 나뉘고
+  // 첫 번째가 버튼이 있는 요소, 두 번째가 사라져야 할 메인 요소
   yellow(e, target) {
-    // disabled: 비활성화 여부
-    this.yellowDisabled = target.dataset.disabled;
-    // 비활성화 되어있다면 줄어들기 기능을 실현할 수 없음.
-    if(this.yellowDisabled == 'true') return;
-
-    this.btnParent = target.closest('[data-project]');
-    this.shrinkElem = this.btnParent.querySelector('.shrink');
-    this.greenBtnElem = this.btnParent.querySelector(`[data-click='greenBtn']`);
-    this.isYellowClicked = target.dataset.isclicked;
-
-    // 줄어들때
-    if(this.isYellowClicked === 'false') {
-      this.hiddenT(this.shrinkElem);
-      target.dataset.isclicked = 'true';
-      this.greenBtnElem.style.backgroundColor = '#323131';
-      this.greenBtnElem.dataset.disabled = 'true';  
-      // 원상복귀
-    } else if(this.isYellowClicked === 'true') {
-      this.hiddenF(this.shrinkElem);
-      target.dataset.isclicked = 'false';
-      this.greenBtnElem.style.backgroundColor = '';
-      this.greenBtnElem.dataset.disabled = 'false';
+    const disabled = target.dataset.disabled;
+    if(disabled === 'true') return;
+    const clicked = target.dataset.clicked;
+    // 초록은 항상 노랑 다음에 있어
+    const green = target.nextElementSibling;
+    this.$root = target.closest('[data-project]');
+    this.$rootFirstChild = this.$root.children[0];
+    // 이 애가 사라져야 한다. 
+    this.$rootSecChild = this.$root.children[1];
+    if(clicked === 'false') {
+      // 클릭했을때 clicked가 false라면 true로 바꿔주고 줄이고
+      this.hiddenT(this.$rootSecChild);
+      target.dataset.clicked = 'true';
+      // 그린 버튼이 비활성화되어야 한다. 그래서 그린 버튼이 비활성화상태에서는 클릭해도 아무런 효과가 없다.
+      green.dataset.disabled = 'true';
+      green.style.backgroundColor = '#323131';
+    } else if(clicked === 'true') {
+      // true라면 false로 바꿔주고 늘린다. 
+      this.hiddenF(this.$rootSecChild);
+      target.dataset.clicked = 'false';
+      green.dataset.disabled = 'false';
+      green.style.backgroundColor = '';
     }
   }
+  // 초록 버튼 클릭하면 화면 전체를 차지하게
+  // 노랑 버튼 비활성화시키고
   green(e, target) {
-    this.greenDisabled = target.dataset.disabled;
-    if(this.greenDisabled == 'true') return;
-    this.goalWidth = document.documentElement.clientWidth;
-    this.goalHeight = document.querySelector('.main').offsetHeight;
-    this.btnParent = target.closest('[data-project]');
-    this.isGreenClicked = target.dataset.isclicked;
-    this.yellowBtnElem = this.btnParent.querySelector(`[data-click='yellowBtn']`);
-
-    if(this.isGreenClicked === 'false') {
-      this.btnParent.style.width = this.goalWidth + 'px';
-      this.btnParent.style.height = this.goalHeight + 'px';
-      this.btnParent.style.left = '0px';
-      this.btnParent.style.top = '0px';
-      target.dataset.isclicked = 'true';
-      this.yellowBtnElem.style.backgroundColor = '#323131';
-      this.yellowBtnElem.dataset.disabled = 'true';
-    } else if(this.isGreenClicked === 'true') {
-      this.btnParent.style.width = '';
-      this.btnParent.style.height = '';
-      this.btnParent.style.left = '';
-      this.btnParent.style.top = '';
-      target.dataset.isclicked = 'false';
-      this.yellowBtnElem.style.backgroundColor = '';
-      this.yellowBtnElem.dataset.disabled = 'false';
+    // 예를 들어 노랑 버튼을 클릭해 초록 버튼이 비활성화됐다면
+    // 창이 커지는 것을 막기위해 걸러내야 한다.
+    const disabled = target.dataset.disabled;
+    if(disabled === 'true') return;
+    const clicked = target.dataset.clicked;
+    const yellow = target.previousElementSibling;
+    this.$root = target.closest('[data-project]');
+    if(clicked === 'false') {
+      target.dataset.clicked = 'true';
+      this.$root.style.height = `${this.$mainHeight}px`;
+      this.$root.style.width = `${this.$mainWidth}px`;
+      this.$root.style.zIndex = `${this._zIndex}`;
+      this.$root.style.left = '0px';
+      this.$root.style.top = '0px';
+      // 옐로우 버튼 조치
+      yellow.dataset.disabled = 'true';
+      yellow.style.backgroundColor = '#323131';
+    } else if(clicked === 'true') {
+      target.dataset.clicked = 'false';
+      this.$root.style.height = '';
+      this.$root.style.width = '';
+      this.$root.style.zIndex = '';
+      this.$root.style.left = '';
+      this.$root.style.top = '';
+      // 옐로우 버튼 조치
+      yellow.dataset.disabled = 'false';
+      yellow.style.backgroundColor = '';
     }
+  }
+  resize() {
+    this.$mainHeight = this.$main.offsetHeight;
+    this.$mainWidth = document.documentElement.clientWidth;
   }
 }
 const click = new Click();
 document.addEventListener('click', click);
+window.addEventListener('resize', click.resize);
 /*
 📍 click과 드래그앤드롭을 모두 가지고 있는 요소는(같은 부모 요소가 아니라 부모 - 자식간), 
 클릭을 하면 pointerdown => .. 이런식으로 pointerdown이벤트가 발생하기 때문에
@@ -561,26 +573,15 @@ class DragAndDrop {
   }
 }
 const dragAndDrop = new DragAndDrop();
-document.addEventListener('pointerdown', dragAndDrop);
+// document.addEventListener('pointerdown', dragAndDrop);
 
 // 더블 클릭
 class Dblclick {
   constructor() {
-    // folder
     this.$project = null;
     this.$file = null;
-    this.shrinkElem = null;
-    this.yellowBtnElem = null;
-    this.greenBtnElem = null;
-    // gif
     this.$gif = null;
-
-    /* app */
-    this.isAppClosed = null;
-    this.projectElem = null;
-    this.circleElem = null;
   }
-
   handleEvent(event) {
     const target = event.target.closest('[data-dblclick]');
     if(!target) return;
@@ -593,111 +594,87 @@ class Dblclick {
     // 어차피 css에서 위치를 정해놨기 때문에 클래스 이름 있음.
     this.$project = target.dataset.project;
     this.$file = document.querySelector(`.file-${this.$project}`);
+    this.reset(this.$file);
     this.$file.hidden = false;
-
-    // this.shrinkElem = this.fileElem.querySelector('.shrink');
-    // this.yellowBtnElem = this.fileElem.querySelector(`[data-click='yellowBtn']`);
-    // this.greenBtnElem = this.fileElem.querySelector(`[data-click='greenBtn']`);
-    // this.original(this.fileElem);
   }
   // 움짤 파일 더블클릭 => 움짤 창 연다
   gif(e, target) {
     this.$project = target.closest('[data-project]').dataset.project;
     this.$gif = document.querySelector(`.gif-${this.$project}`);
+    this.reset(this.$gif);
     this.$gif.hidden = false;
-
-    // this.shrinkElem = this.$gif.querySelector('.shrink');
-    // this.yellowBtnElem = this.$gif.querySelector(`[data-click='yellowBtn']`);
-    // this.greenBtnElem = this.$gif.querySelector(`[data-click='greenBtn']`);
-    // this.original(this.$gif);
   }
-
-  original(elem) {
-    this.shrinkElem.hidden = false;
-    this.yellowBtnElem.dataset.isclicked = 'false';
-    this.greenBtnElem.dataset.disabled = 'false';
-    this.greenBtnElem.style.backgroundColor = '';
-    this.yellowBtnElem.style.backgroundColor = '';
-    this.greenBtnElem.dataset.isclicked = 'false';
-    this.yellowBtnElem.dataset.disabled = 'false';
-    elem.style.width = '';
+  // 창을 다시 열때 버튼의 상태를 초기화하고, 원래창으로 복귀해야 한다. 
+  reset(elem) {
+    // 노랑버튼초기화
+    const yellow = elem.querySelector('.btn-yellow');
+    yellow.dataset.clicked = 'false';
+    yellow.dataset.disabled = 'false';
+    yellow.style.backgroundColor = '';
+    const secondChild = elem.children[1];
+    secondChild.hidden = false;
+    // 초록버튼초기화
+    const green = elem.querySelector('.btn-green');
+    green.dataset.clicked = 'false';
+    green.dataset.disabled = 'false';
+    green.style.backgroundColor = '';
     elem.style.height = '';
+    elem.style.width = '';
+    elem.style.zIndex = '';
     elem.style.left = '';
-    elem.style.top = '';    
+    elem.style.top = '';
   }
-
   app(e, target) {
-    this.isAppClosed = target.dataset.isappclosed;
-    // 앱이 꺼지지 않았으면 나가
-    if(this.isAppClosed === 'false') return;
-    this.$project = target.dataset.app;
-    this.projectElem = document.querySelector(`[data-project='${this.$project}']`);
-    this.circleElem = target.querySelector('.main-apps__main__app__circle');
-
+    const closed = target.dataset.closed;
+    // 앱이 삭제된 상태(closed === 'true')여야 이 함수의 내용이 실행된다.
+    if(closed === 'false') return;
+    const type = target.dataset.app;
+    const circle = target.querySelector('.app-circle');
+    const elem = document.querySelector(`.${type}`);
+    // 다시 창 실행하고
+    elem.hidden = false;
+    circle.hidden = false;
+    // 클릭했을때 튀어오르는 효과 주고
     target.classList.add('dblclicked');
-    this.projectElem.hidden = false;
-    this.circleElem.hidden = false;
-
-    this.shrinkElem = this.projectElem.querySelector('.shrink');
-    this.yellowBtnElem = this.projectElem.querySelector(`[data-click='yellowBtn']`);
-    this.greenBtnElem = this.projectElem.querySelector(`[data-click='greenBtn']`);
-    this.original(this.projectElem);
+    target.dataset.closed = 'false';
+    this.reset(elem);
   }
   // 파일과 gif에서 타이틀 더블 클릭하면 창 커짐
-  greenBtn(e, target) {
-    this.greenBtnElem = target.closest('[data-project]').querySelector(`[data-click='greenBtn']`);
-    click.greenBtn(undefined, this.greenBtnElem);
+  green(e, target) {
+    const btn = target.querySelector('.btn-green');
+    click.green(undefined, btn);
   }
-  // 스티커 윗부분 더블 클릭하면 줄어드는 효과
-  yellowBtn(e, target) {
-    this.yellowBtnElem = target.closest('[data-project]').querySelector('[data-click="yellowBtn"]');
-    click.yellowBtn(undefined, this.yellowBtnElem);
+  yellow(e, target) {
+    const btn = target.querySelector('.btn-yellow');
+    click.yellow(undefined, btn);
   }
 }
-
 const dblclick = new Dblclick();
 document.addEventListener('dblclick', dblclick);
 
-// --------------------------------------------------------------------------------------------------------------------------------------------------------------
 // 앱
 
 class App {
   constructor() {
-    this.appArea = document.querySelector('.main-apps__main');
-    this.eachApp = document.querySelectorAll('.main-apps__main__app');
-    this.eachTooltip = document.querySelectorAll('.main-apps__main__app__tooltip');
-    this.prevTooltip = null;
-    this.currentTooltip = null;
-
-    this.showTooltip = this.showTooltip.bind(this);
-    this.removeAllTooltips = this.removeAllTooltips.bind(this);
+    this.$appMain = document.querySelector('.app-main');
+    this.$appMain.onpointerover = this.tooltip.bind(this);
+    this.$appMain.onpointerout = this.tooltipOut.bind(this);
+    this.$tooltip = null;
   }
-
-  tooltipEvent() {
-    for(let app of this.eachApp) {
-      app.addEventListener('pointerenter', this.showTooltip);
-    }  
-    this.appArea.addEventListener('pointerleave', this.removeAllTooltips);
+  tooltip(e) {
+    const app = e.target.closest('.app-box');
+    if(!app) return;
+    const tooltip = app.querySelector('.app-tooltip');
+    tooltip.hidden = false;
+    this.$tooltip = tooltip;
   }
-
-  showTooltip(e) {
-    this.currentTooltip = e.target.querySelector('.main-apps__main__app__tooltip');
-    if(!this.prevTooltip) {
-      this.currentTooltip.style.display = 'block';
-    } else {
-      this.prevTooltip.style.display = 'none';
-      this.currentTooltip.style.display = 'block';
-    }
-    this.prevTooltip = this.currentTooltip;  
-  }
-  
-  removeAllTooltips(e) {
-    this.prevTooltip.style.display = 'none';  
+  tooltipOut() {
+    if(!this.$tooltip) return;
+    this.$tooltip.hidden = true;
   }
 }
 
-let app = new App();
-app.tooltipEvent();
+const app = new App();
 
 
 
