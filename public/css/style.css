@@ -834,6 +834,14 @@ body {
   border-top: 1px solid rgba(0, 0, 0, 0.4);
 }
 
+.gif-link {
+  position: absolute;
+  display: block;
+  width: 20px;
+  right: 10px;
+  top: 10px;
+}
+
 .gif-arrow {
   position: absolute;
   display: block;

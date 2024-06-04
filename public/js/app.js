@@ -604,6 +604,16 @@ class Dblclick {
     this.reset(this.$gif);
     this.$gif.hidden = false;
   }
+  // 링크 이동
+  file(e, target) {
+    const href = target.dataset.href;
+    window.open(href, '_blank');
+  }
+  // pdf파일 다운로드
+  download(e, target) {
+    const href = target.dataset.href;
+    window.open(href, '_blank');
+  }  
   // 창을 다시 열때 버튼의 상태를 초기화하고, 원래창으로 복귀해야 한다. 
   reset(elem) {
     // 노랑버튼초기화
