@@ -64,8 +64,8 @@ class BootingProfile {
     this.$profileImg.src = `/public/img/profile/profile.png`;
   }
   toMain() {
-    this.$main.style.display = 'block';
     this.$profile.style.display = 'none';
+    this.$main.style.display = 'block';
   }
   async clickProfile() {
     this.imgChange();
@@ -80,7 +80,7 @@ class BootingProfile {
   }
 }
 const bootingProfile = new BootingProfile();
-// document.addEventListener('DOMContentLoaded', bootingProfile.init);
+document.addEventListener('DOMContentLoaded', bootingProfile.init);
 
 // 상단에 시간
 class Time {
@@ -452,6 +452,9 @@ class Click {
     this.hiddenT(circle);
     // 더블클릭 클래스 지운다.
     this.removeClassList(app, 'dblclicked');
+    if(project === 'music') {
+      this.pauseMusic();
+    }
   }
   // 노랑 버튼 클릭하면 Nav만 남고 초록 버튼은 비활성화된다. 
   // 노랑 버튼이 있는 요소의 가장 상위 부모 요소는 두 개의 큰 자식 요소로 나뉘고
@@ -573,7 +576,7 @@ class DragAndDrop {
   }
 }
 const dragAndDrop = new DragAndDrop();
-// document.addEventListener('pointerdown', dragAndDrop);
+document.addEventListener('pointerdown', dragAndDrop);
 
 // 더블 클릭
 class Dblclick {
@@ -663,7 +666,6 @@ const dblclick = new Dblclick();
 document.addEventListener('dblclick', dblclick);
 
 // 앱
-
 class App {
   constructor() {
     this.$appMain = document.querySelector('.app-main');
