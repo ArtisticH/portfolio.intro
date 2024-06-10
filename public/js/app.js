@@ -43,7 +43,7 @@ class BootingProfile {
     await new Promise((resolve) => {
       setTimeout(() => {
         resolve();
-      }, 6000);
+      }, 3000);
     });
     this.toProfile();
   }

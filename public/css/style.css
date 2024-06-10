@@ -67,7 +67,7 @@ body {
 }
 
 .booting-bar-filled.fill {
-  animation: fill-bar 5s;
+  animation: fill-bar 3s;
   width: 100%;
 }
 /*
@@ -855,8 +855,8 @@ body {
 }
 
 .gif-img {
-  height: 100%;
   width: 100%;
+  display: block;
 }
 
 /* 스티커 */
