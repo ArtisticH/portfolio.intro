@@ -1,5 +1,3 @@
-import css from '../css/style.css';
-
 class BootingProfile {
   constructor() {
     // 부팅 화면
