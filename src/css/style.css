@@ -578,10 +578,10 @@ body {
 /* 폴더 */
 
 .folder-box {
-  padding: 10px 0 0 10px;
+  padding: 20px 0 0 20px;
   display: grid;
-  grid-template-columns: 75px 75px;
-  gap: 10px 30px;
+  grid-template-columns: 75px;
+  gap: 0 30px;
   width: fit-content;
 }
 
